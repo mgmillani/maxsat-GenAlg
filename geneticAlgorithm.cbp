@@ -31,7 +31,22 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="include/debug.h" />
+		<Unit filename="include/debugOFF.h" />
+		<Unit filename="include/definitions.h" />
+		<Unit filename="include/geneticAlgorithm.h" />
+		<Unit filename="include/random.h" />
 		<Unit filename="include/read.h" />
+		<Unit filename="include/sat.h" />
+		<Unit filename="src/geneticAlgorithm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/random.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/read.c">
 			<Option compilerVar="CC" />
 		</Unit>

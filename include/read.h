@@ -1,22 +1,7 @@
 #ifndef READ_H
 #define READ_H
 
-typedef struct s_clause
-{
-	unsigned int *var; //tera size posicoes
-	unsigned char *signal; //var xor signal = literal
-	unsigned int size;
-
-}t_clause;
-
-typedef struct s_instance
-{
-	unsigned char *var;  //tera numvars posicoes
-	unsigned int numVars; //numero de variaveis do problema
-	t_clause *clause;
-	unsigned int numClauses;
-
-}t_instance;
+#include "sat.h"
 
 /**
   * carrega um instancia do SAT a partir de um arquivo CNF

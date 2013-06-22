@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "read.h"
 
@@ -15,6 +16,8 @@ int main(int argc, char *argv[])
 		showInstance(&inst);
 		ERR("***********\n");
 	}
+
+	ERR("RAND_MAX:%u\n",(unsigned int)RAND_MAX);
 
 	return 0;
 
