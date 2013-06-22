@@ -4,7 +4,7 @@ SRC = src
 OBJ = obj
 BIN = bin
 INC = include
-OBJECTS = $(OBJ)/main.o
+OBJECTS = $(OBJ)/main.o $(OBJ)/read.o
 NAME = maxsat
 
 all: release
