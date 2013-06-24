@@ -1,0 +1,11 @@
+set Clauses;
+set Vars;
+
+param Neg{i in Vars, j in Clauses};
+param Pos{i in Vars, j in Clauses};
+
+var Value {v in Vars}, binary;
+var Unsatisfied {c in Clauses}, binary;
+
+minimize z: sum{c in Clauses}(Unsatisfied[c]);
+	s.t. satisfy{c in Clauses}: sum{v in Vars}( (Neg[v,c]*(1 - Value[v]) + (Pos[v,c]*Value[v]) )) + Unsatisfied[c] >= 1;
