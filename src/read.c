@@ -109,7 +109,7 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 					else if(var == 0)
 					{
 						//faz com que a clausula use o numero correto de variaveis
-						if(numVars <= inst->clause[clauseIndex].size)
+						if(numVars < inst->clause[clauseIndex].size)
 						{
 							inst->clause[clauseIndex].size = numVars;
 							inst->clause[clauseIndex].var = realloc(inst->clause[clauseIndex].var,sizeof(*inst->clause[clauseIndex].var)*numVars);
@@ -134,6 +134,17 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 
 					inst->clause[clauseIndex].var[numVars] = var;
 					inst->clause[clauseIndex].signal[numVars] = signal;
+
+					if(clauseIndex==0)
+					{
+						ERR("Cl:%u\tVar: %u\tSignal:%d\n",(unsigned int)clauseIndex,(unsigned int)var,(int)signal);
+						showClause(inst->clause+clauseIndex);
+					}
+					else if(clauseIndex == 1)
+					{
+						ERR("Cl:%u\tVar: %u\tSignal:%d\n",(unsigned int)clauseIndex,(unsigned int)var,(int)signal);
+						showClause(inst->clause+clauseIndex-1);
+					}
 
 					//aumenta o numero de variaveis lidas
 					numVars++;
@@ -183,6 +194,9 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 		}
 	}
 
+	ERR("Clause 0:\n\n");
+	showClause(inst->clause);
+
 	return inst;
 
 }
@@ -203,6 +217,91 @@ t_clause *clauseInit(t_clause *clause,unsigned int literals)
 	return clause;
 }
 
+void makeGlpkData(t_instance *inst)
+{
+
+	printf("data;\n");
+
+	//escreve o numero de clausulas
+	printf("set Clauses := ");
+	unsigned int i;
+	for(i=1 ; i<=inst->numClauses ; i++)
+		printf("%u ",i);
+
+	printf(";\n");
+
+	printf("set Variables := ");
+	//escreve as variaveis
+	for(i=1 ; i<=inst->numVars ; i++)
+		printf("%u ",i);
+	printf(";\n");
+
+	//descreve as clausulas
+	//comeca com os literias positivos
+	printf("param Pos := \n");
+
+	for(i=0 ; i<inst->numVars ; i++)
+	{
+		unsigned int j;
+		for(j=0 ; j < inst->numClauses ; j++)
+		{
+			t_clause clause = inst->clause[j];
+			//procura a variavel
+			unsigned int k;
+			char found = 0;
+			for(k=0 ; k<clause.size ; k++)
+			{
+				if(clause.var[k] == (i+1))
+				{
+					//se a variavel aparece positiva
+					//variavel clausula valor
+					if(clause.signal[k] == 0)
+						printf("%u %u 1\n",i+1,j+1);
+					else
+						printf("%u %u 0\n",i+1,j+1);
+					found = 1;
+					break;
+				}
+			}
+			if(!found)
+				printf("%u %u 0\n",i+1,j+1);
+		}
+	}
+
+	printf("\n;");
+
+	//descreve as variaveis que aparecem negadas
+
+	printf("param Neg := \n");
+	for(i=0 ; i<inst->numVars ; i++)
+	{
+		unsigned int j;
+		for(j=0 ; j < inst->numClauses ; j++)
+		{
+			t_clause clause = inst->clause[j];
+			//procura a variavel
+			unsigned int k;
+			char found = 0;
+			for(k=0 ; k<clause.size ; k++)
+			{
+				if(clause.var[k] == (i+1))
+				{
+					//se a variavel aparece negada
+					//variavel clausula valor
+					if(clause.signal[k] == 1)
+						printf("%u %u 1\n",i+1,j+1);
+					else
+						printf("%u %u 0\n",i+1,j+1);
+					found = 1;
+					break;
+				}
+			}
+			if(!found)
+				printf("%u %u 0\n",i+1,j+1);
+		}
+	}
+	printf("\n;");
+}
 
 /**
   * printa todas as clausulas da instancia
@@ -225,11 +324,15 @@ void showClause(t_clause *clause)
 	for(i=0 ; i<clause->size ;  i++)
 	{
 		if(clause->signal[i] == 1)
-			printf("-%u ",clause->var[i]);
+		{
+			ERR("-%u ",clause->var[i]);
+		}
 		else
-			printf(" %u ",clause->var[i]);
+		{
+			ERR(" %u ",clause->var[i]);
+		}
 	}
-	printf("\n");
+	ERR("\n");
 }
 
 

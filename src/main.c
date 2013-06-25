@@ -14,10 +14,9 @@ int main(int argc, char *argv[])
 		satLoadInstance(&inst,argv[i]);
 		ERR("Num Vars: %u\n",inst.numVars);
 		showInstance(&inst);
+		makeGlpkData(&inst);
 		ERR("***********\n");
 	}
-
-	ERR("RAND_MAX:%u\n",(unsigned int)RAND_MAX);
 
 	return 0;
 
