@@ -4,7 +4,7 @@ SRC = src
 OBJ = obj
 BIN = bin
 INC = include
-OBJECTS = $(OBJ)/main.o $(OBJ)/read.o
+OBJECTS = $(OBJ)/main.o $(OBJ)/read.o $(OBJ)/random.o $(OBJ)/range.o $(OBJ)/geneticAlgorithm.o $(OBJ)/sat.o
 NAME = maxsat
 
 all: release
