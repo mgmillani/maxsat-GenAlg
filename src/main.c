@@ -15,16 +15,29 @@ int main(int argc, char *argv[])
 	int i;
 	for(i=1 ; i<argc ; i++)
 	{
-		clock_t t0= clock();
+
 		t_instance inst;
 		satLoadInstance(&inst,argv[i]);
-		geneticAlgorithmSat(&inst,300,300,0.1);
+		//roda 10 vezes e faz a media
+		unsigned int j;
+		clock_t tavg = 0;
+		double satisfyAverage = 0;
+		for(j=0 ; j<10 ; j++)
+		{
+			clock_t t0 = clock();
+			geneticAlgorithmSat(&inst,1000,100,0.1);
+			tavg += clock() - t0;
+			satisfyAverage += satAmountSatisfied(&inst);
+			//ERR("Amount: %u\n",satAmountSatisfied(&inst));
+		}
+		satisfyAverage /= 10;
+		tavg /= 10;
 		ERR("Variables: %u\n",inst.numVars);
 		ERR("Clauses: %u\n",inst.numClauses);
 		ERR("Result: %s\n",argv[i]);
-		ERR("Amount satisfied: %u\n",satAmountSatisfied(&inst));
-		ERR("Percent satisfied: %lf\n",satPercentSatisfied(&inst));
-		ERR("Delay: %lu clocks = %lf s\n",clock() - t0,(double)(clock() - t0)/CLOCKS_PER_SEC);
+		ERR("Amount satisfied: %lf\n",satisfyAverage);
+		ERR("Percent satisfied: %lf\n",(double)satisfyAverage/inst.numClauses);
+		ERR("Delay: %lu clocks = %lf s\n",clock() - tavg,(double)(clock() - tavg)/CLOCKS_PER_SEC);
 		ERR("Clocks per sec: %ld\n",CLOCKS_PER_SEC);
 		ERR("####\n####\n");
 	}

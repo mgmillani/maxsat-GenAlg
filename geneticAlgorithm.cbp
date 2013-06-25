@@ -36,6 +36,7 @@
 		<Unit filename="include/definitions.h" />
 		<Unit filename="include/geneticAlgorithm.h" />
 		<Unit filename="include/random.h" />
+		<Unit filename="include/range.h" />
 		<Unit filename="include/read.h" />
 		<Unit filename="include/sat.h" />
 		<Unit filename="src/geneticAlgorithm.c">
@@ -47,7 +48,13 @@
 		<Unit filename="src/random.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/range.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/read.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/sat.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

@@ -70,7 +70,7 @@ void geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigned int ma
 	for(i=0 ; i<maxIterations ; i++)
 	{
 		//ordena a populacao
-		qsort(pop,popSize,sizeof(*pop),compareIndividuals);
+		//qsort(pop,popSize,sizeof(*pop),compareIndividuals);
 		//faz o crossover, gerando uma nova populacao de mesmo tamanho
 		//primeiro, gera a aptidao acumulada para fazer uma selecao enviesada
 		unsigned int j;
@@ -84,11 +84,13 @@ void geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigned int ma
 			//escolhe um pai aleatoriamente mas com base na aptidao acumulada
 			unsigned int father = rangeSearch(accFitness,rand()%((unsigned int)accFitness[popSize-1]),popSize-1);
 			unsigned int mother = rangeSearch(accFitness,rand()%((unsigned int)accFitness[popSize-1]),popSize-1);
+			//unsigned int other = rangeSearch(accFitness,rand()%((unsigned int)accFitness[popSize-1]),popSize-1);
 			satCrossover(pop+father,pop+mother,buf+j,inst->numVars);
+			//satThreeParentCrossover(pop+father,pop+mother,pop+other,buf+j,inst->numVars);
 			//aplica uma mutacao
 			if(rand() > mutationLimit)
 			{
-				satMutation(buf+j,inst->numVars);
+				satMutation(buf+j,mutationLimit,inst->numVars);
 			}
 			//calcula a aptidao do novo membro
 			inst->var = buf[j].var;
@@ -127,12 +129,27 @@ void satCrossover(t_individual *father, t_individual *mother, t_individual *chil
 		child->var[numVars-1] = mother->var[numVars-1];
 	}
 }
+void satThreeParentCrossover(t_individual *father, t_individual *mother, t_individual *other, t_individual *child,unsigned int numVars)
+{
+	unsigned int i;
+	for(i=0 ; i<numVars ; i++)
+	{
+		if(father->var[i] == mother->var[i])
+			child->var[i] = father->var[i];
+		else
+			child->var[i] = other->var[i];
+	}
+}
 
-void satMutation(t_individual *individual,unsigned int numVars)
+
+void satMutation(t_individual *individual,int mutationLimit,unsigned int numVars)
 {
 	//troca uma variavel aleatoria
-	unsigned int index = rand()%numVars;
-	individual->var[index] ^= 1;
+	while(rand() < mutationLimit)
+	{
+		unsigned int index = rand()%numVars;
+		individual->var[index] ^= 1;
+	}
 }
 
 int compareIndividuals(const void *a, const void *b)

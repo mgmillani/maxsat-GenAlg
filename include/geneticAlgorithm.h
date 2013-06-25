@@ -30,7 +30,7 @@ void geneticAlgorithmSat(t_instance *inst,
 
 void satCrossover(t_individual *father, t_individual *mother, t_individual *child,unsigned int numVars);
 
-void satMutation(t_individual *individual,unsigned int numVars);
+void satMutation(t_individual *individual,int mutationLimit,unsigned int numVars);
 
 int compareIndividuals(const void *a, const void *b);
 
