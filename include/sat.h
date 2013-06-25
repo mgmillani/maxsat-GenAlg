@@ -18,5 +18,17 @@ typedef struct s_instance
 
 }t_instance;
 
+/**
+  * determina a porcentagem de clausulas satisfeitas
+  */
+double satPercentSatisfied(t_instance *inst);
+
+/**
+  * determina o numero de clausulas satisfeitas
+  */
+unsigned int satAmountSatisfied(t_instance *inst);
+
+void satPrintVars(t_instance *inst);
+
 #endif // SAT_H
 

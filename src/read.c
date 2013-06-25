@@ -140,7 +140,7 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 						inst->clause[clauseIndex].size = numVars*2;
 					}
 
-					inst->clause[clauseIndex].var[numVars] = var;
+					inst->clause[clauseIndex].var[numVars] = var-1;
 					inst->clause[clauseIndex].signal[numVars] = signal;
 
 					//aumenta o numero de variaveis lidas
