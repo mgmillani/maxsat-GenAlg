@@ -29,7 +29,8 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 	e_state state = State_Ini;
 	e_state nextState = State_Ini;
 	char read = 1;
-	while(!feof(fl))
+	char end = 0;
+	while(!feof(fl) && !end)
 	{
 		char c;
 		if(read)
@@ -86,9 +87,16 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 			case State_ReadClause:
 				state = State_ReadWord;
 				//inicializa a clausula atual
-				clauseInit(inst->clause+clauseIndex,CLAUSESIZE);
-				numVars = 0;
-				nextState = State_AddVar;
+				/*ERR("clause index:%u\n",clauseIndex);
+				ERR("Num clauses: %u\n",inst->numClauses);*/
+				if(clauseIndex >= inst->numClauses)
+					end = 1;
+				else
+				{
+					clauseInit(inst->clause+clauseIndex,CLAUSESIZE);
+					numVars = 0;
+					nextState = State_AddVar;
+				}
 				break;
 
 			//adiciona um variavel a clausula atual
@@ -135,17 +143,6 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 					inst->clause[clauseIndex].var[numVars] = var;
 					inst->clause[clauseIndex].signal[numVars] = signal;
 
-					if(clauseIndex==0)
-					{
-						ERR("Cl:%u\tVar: %u\tSignal:%d\n",(unsigned int)clauseIndex,(unsigned int)var,(int)signal);
-						showClause(inst->clause+clauseIndex);
-					}
-					else if(clauseIndex == 1)
-					{
-						ERR("Cl:%u\tVar: %u\tSignal:%d\n",(unsigned int)clauseIndex,(unsigned int)var,(int)signal);
-						showClause(inst->clause+clauseIndex-1);
-					}
-
 					//aumenta o numero de variaveis lidas
 					numVars++;
 					read = 1;
@@ -191,11 +188,9 @@ t_instance *satLoadInstance(t_instance *inst,const char *fname)
 			}
 
 			break;
+
 		}
 	}
-
-	ERR("Clause 0:\n\n");
-	showClause(inst->clause);
 
 	return inst;
 

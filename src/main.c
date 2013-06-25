@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 		t_instance inst;
 		satLoadInstance(&inst,argv[i]);
 		ERR("Num Vars: %u\n",inst.numVars);
-		showInstance(&inst);
+		//showInstance(&inst);
 		makeGlpkData(&inst);
 		ERR("***********\n");
 	}
