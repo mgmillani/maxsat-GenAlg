@@ -24,22 +24,26 @@ int main(int argc, char *argv[])
 		unsigned int j;
 		clock_t tavg = 0;
 		double satisfyAverage = 0;
-		for(j=0 ; j<10 ; j++)
+		double iniAvg = 0;
+		for(j=0 ; j<3 ; j++)
 		{
 			clock_t t0 = clock();
-			geneticAlgorithmSat(&inst,1000,100,0.1);
+			iniAvg += geneticAlgorithmSat(&inst,200,100,0.1);
 			tavg += clock() - t0;
 			satisfyAverage += satAmountSatisfied(&inst);
+			//ERR("%u\t%u\n",10*(j+1),satAmountSatisfied(&inst));
 		}
-		satisfyAverage /= 10;
-		tavg /= 10;
-		ERR("Variables: %u\n",inst.numVars);
+		satisfyAverage /= 3;
+		tavg /= 3;
+		iniAvg /= 3;
+		//ERR("Variables: %u\n",inst.numVars);
 		ERR("Clauses: %u\n",inst.numClauses);
 		ERR("Result: %s\n",argv[i]);
+		ERR("Initial: %lf (%lf%%)\n",iniAvg,100*iniAvg/inst.numClauses)
 		ERR("Amount satisfied: %lf\n",satisfyAverage);
 		ERR("Percent satisfied: %lf\n",(double)satisfyAverage/inst.numClauses);
-		ERR("Delay: %lu clocks = %lf s\n",clock() - tavg,(double)(clock() - tavg)/CLOCKS_PER_SEC);
-		ERR("Clocks per sec: %ld\n",CLOCKS_PER_SEC);
+		ERR("Delay: %lu clocks = %lf s\n",tavg,(double)(tavg)/CLOCKS_PER_SEC);
+		//ERR("Clocks per sec: %ld\n",CLOCKS_PER_SEC);
 		ERR("####\n####\n");
 	}
 

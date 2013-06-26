@@ -34,10 +34,11 @@ void geneticAlgorithm(void *data, void *population, unsigned int memberSize,
   * implementacao de um algoritmo genetico para solucao do problema do max-sat
   * atribui a melhor solucao encontrada a inst->var
   */
-void geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigned int maxIterations, double mutationChance)
+unsigned int geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigned int maxIterations, double mutationChance)
 {
 
 	unsigned int i;
+	unsigned int initial;
 	double best = 0;
 	unsigned char *origVar = inst->var;
 	int mutationLimit = RAND_MAX*mutationChance;
@@ -60,11 +61,13 @@ void geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigned int ma
 		}
 		inst->var = pop0[i].var;
 		pop0[i].fitness = satPercentSatisfied(inst);
+		initial = satAmountSatisfied(inst);
 		if(pop0[i].fitness > best)
 		{
 			best = pop0[i].fitness;
 			memcpy(origVar,pop0[i].var,sizeof(*origVar)*inst->numVars);
 		}
+
 	}
 
 	for(i=0 ; i<maxIterations ; i++)
@@ -113,6 +116,8 @@ void geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigned int ma
 
 
 	inst->var = origVar;
+
+	return initial;
 }
 
 void satCrossover(t_individual *father, t_individual *mother, t_individual *child,unsigned int numVars)

@@ -23,7 +23,7 @@ void geneticAlgorithm(void *data,
 /**
   * implementacao de um algoritmo genetico para solucao do problema do max-sat
   */
-void geneticAlgorithmSat(t_instance *inst,
+unsigned int geneticAlgorithmSat(t_instance *inst,
                          unsigned int popSize,
                          unsigned int maxIterations,
                          double mutationChance);
