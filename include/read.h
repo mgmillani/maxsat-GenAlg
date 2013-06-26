@@ -14,6 +14,8 @@ t_instance *satLoadInstance(t_instance *,const char *fname);
   */
 t_clause *clauseInit(t_clause *clause,unsigned int literals);
 
+void makeGlpkData(t_instance *inst);
+
 /**
   * printa todas as clausulas da instancia
   */

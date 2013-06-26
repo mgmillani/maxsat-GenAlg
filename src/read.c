@@ -246,7 +246,7 @@ void makeGlpkData(t_instance *inst)
 			char found = 0;
 			for(k=0 ; k<clause.size ; k++)
 			{
-				if(clause.var[k] == (i+1))
+				if(clause.var[k] == (i))
 				{
 					//se a variavel aparece positiva
 					//variavel clausula valor
@@ -320,11 +320,11 @@ void showClause(t_clause *clause)
 	{
 		if(clause->signal[i] == 1)
 		{
-			ERR("-%u ",clause->var[i]);
+			ERR("-%u ",1+clause->var[i]);
 		}
 		else
 		{
-			ERR(" %u ",clause->var[i]);
+			ERR(" %u ",1+clause->var[i]);
 		}
 	}
 	ERR("\n");

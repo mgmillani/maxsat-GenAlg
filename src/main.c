@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
 
 		t_instance inst;
 		satLoadInstance(&inst,argv[i]);
+		//showInstance(&inst);
+		//makeGlpkData(&inst);
 		//roda 10 vezes e faz a media
 		unsigned int j;
 		clock_t tavg = 0;
@@ -28,7 +30,6 @@ int main(int argc, char *argv[])
 			geneticAlgorithmSat(&inst,1000,100,0.1);
 			tavg += clock() - t0;
 			satisfyAverage += satAmountSatisfied(&inst);
-			//ERR("Amount: %u\n",satAmountSatisfied(&inst));
 		}
 		satisfyAverage /= 10;
 		tavg /= 10;
