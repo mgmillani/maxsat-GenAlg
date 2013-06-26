@@ -61,9 +61,9 @@ unsigned int geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigne
 		}
 		inst->var = pop0[i].var;
 		pop0[i].fitness = satPercentSatisfied(inst);
-		initial = satAmountSatisfied(inst);
 		if(pop0[i].fitness > best)
 		{
+			initial = satAmountSatisfied(inst);
 			best = pop0[i].fitness;
 			memcpy(origVar,pop0[i].var,sizeof(*origVar)*inst->numVars);
 		}
@@ -87,9 +87,9 @@ unsigned int geneticAlgorithmSat(t_instance *inst, unsigned int popSize, unsigne
 			//escolhe um pai aleatoriamente mas com base na aptidao acumulada
 			unsigned int father = rangeSearch(accFitness,rand()%((unsigned int)accFitness[popSize-1]),popSize-1);
 			unsigned int mother = rangeSearch(accFitness,rand()%((unsigned int)accFitness[popSize-1]),popSize-1);
-			//unsigned int other = rangeSearch(accFitness,rand()%((unsigned int)accFitness[popSize-1]),popSize-1);
-			satCrossover(pop+father,pop+mother,buf+j,inst->numVars);
-			//satThreeParentCrossover(pop+father,pop+mother,pop+other,buf+j,inst->numVars);
+			unsigned int other = rangeSearch(accFitness,rand()%((unsigned int)accFitness[popSize-1]),popSize-1);
+			//satCrossover(pop+father,pop+mother,buf+j,inst->numVars);
+			satThreeParentCrossover(pop+father,pop+mother,pop+other,buf+j,inst->numVars);
 			//aplica uma mutacao
 			if(rand() > mutationLimit)
 			{

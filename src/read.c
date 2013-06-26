@@ -279,7 +279,7 @@ void makeGlpkData(t_instance *inst)
 			char found = 0;
 			for(k=0 ; k<clause.size ; k++)
 			{
-				if(clause.var[k] == (i+1))
+				if(clause.var[k] == (i))
 				{
 					//se a variavel aparece negada
 					//variavel clausula valor
